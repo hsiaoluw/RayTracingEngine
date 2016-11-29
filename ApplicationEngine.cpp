@@ -163,19 +163,11 @@ int ApplicationEngine::Render()
         GzMaterial mat2(GzTexture(&GzTexture::checker_ptex_func, 5), 0.2f);
         //GzMaterial mat_norm(GzColor(0.5f, 0.5f, 0.5f), GzTexture(file, &GzTexture::image_tex_func, 0), 16.0f, 0.8f);
         GzGeometry ** p_geos = new GzGeometry*[3];
-        //p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, mat2);
+        p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, mat2);
         //p_geos[0] = new Sphere(GzVector3(5.2f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor(0.5f, 0.5f, 0.5f), 16.0f, 0.8f));
-<<<<<<< HEAD
-       // p_geos[1] = new Sphere(GzVector3(-5.2f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor(0.5f, 0.5f, 0.5f), 0.8f));
-        p_geos[0] = new Plane(GzVector3(0.0f, 1.0f, 0.0f), 0.0f, GzVector3(0.0f, 0.0f, 1.0f), mat);
-		p_geos[1] = new Ellipsoid(GzVector3(0.0f, 5.0f,0.0f), GzMaterial (GzColor(0.5f, 0.5f, 0.5f), 1.3f,0.8f,0.2f),GzVector3(5,0,0), GzVector3(0, 5, 0), GzVector3(0, 0, 1));
-		
-        GzGeometry * p_unionGeometry = new Union(2, p_geos);
-=======
         p_geos[1] = new Sphere(GzVector3(-5.2f, 5.0f, 0.0f), 5.0f, GzMaterial(GzColor(0.5f, 0.5f, 0.5f), 16.0f, 1.12f, 0.5f, 0.5f));
         p_geos[2] = new Plane(GzVector3(0.0f, 1.0f, 0.0f), 0.0f, GzVector3(0.0f, 0.0f, 1.0f), mat);
         GzGeometry * p_unionGeometry = new Union(3, p_geos);
->>>>>>> origin/master
         //Sphere s0(GzVector3(0.0f, 0.0f, 10.0f), 5.0f);
         //p_s0->material = mat;
         //GzGeometry scene = constructScene(inFile);

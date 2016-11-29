@@ -105,14 +105,14 @@ IntersectResult Sphere::intersect(const GzRay &ray) const
         GzVector3 relative(interPos - center);
         GzVector3 n(relative.normalize());
         float theta = std::acos(n.dotMultiply((this->arctic - this->center).normalize()));
-        float v = static_cast<float>(theta / PI);
+        float v = (theta+1)/2;
         float u = 0.0f;
         if (v != 0.0f && v != 1.0f)
         {
             float cosPhiL = n.dotMultiply(this->long_x - this->center);
             float sinPhiL = n.dotMultiply(this->long_y - this->center);
             float phi = std::atan2(sinPhiL, cosPhiL);
-            u = static_cast<float>(phi / (2*PI) + 0.5);
+            u = static_cast<float>((phi /(PI)))/2 + 0.5;
         }
 
         return IntersectResult(this, distance, interPos, n, u, v);
@@ -161,7 +161,7 @@ float Sphere::getIntersectDistance(const GzRay &ray) const
             {
                 return dDotV - deltaSqrt;
             }
-            else
+            else if(dDotV + deltaSqrt > EPSILON0)
             {
                 return dDotV + deltaSqrt;
             }
@@ -265,7 +265,7 @@ float Rec::getIntersectDistance(const GzRay &ray) const {
 
 	GzVector3 xUnit(this->bX - this->base);
 	GzVector3 yUnit(this->bY - this->base);
-	GzVector3 normal(xUnit.crossMultiply(yUnit).normalize());
+	GzVector3 normal(-1*xUnit.crossMultiply(yUnit).normalize());
 	float dToO(this->base.dotMultiply(normal));
 	float dDotN(ray.direction.dotMultiply(normal));
 	if (dDotN == 0.0f)
@@ -273,7 +273,7 @@ float Rec::getIntersectDistance(const GzRay &ray) const {
 		return std::numeric_limits<float>::infinity();
 	}
 	float distance((dToO - ray.origin.dotMultiply(normal)) / dDotN);
-	if (distance <= 0.0f)
+	if (distance <= EPSILON0)
 	{
 		return std::numeric_limits<float>::infinity();
 	}
@@ -294,7 +294,7 @@ IntersectResult Rec::intersect(const GzRay &ray) const
 {
 	GzVector3 xUnit(this->bX - this->base);
 	GzVector3 yUnit(this->bY - this->base);
-	GzVector3 normal(xUnit.crossMultiply(yUnit).normalize());
+	GzVector3 normal(-1*xUnit.crossMultiply(yUnit).normalize());
 	float dToO(this->base.dotMultiply(normal));
 	float dDotN(ray.direction.dotMultiply(normal));
 	if (dDotN == 0.0f)
@@ -320,7 +320,7 @@ IntersectResult Rec::intersect(const GzRay &ray) const
         // For simplicity, this only need to be done for a rectangle.
     }
 
-	return IntersectResult(this, distance, interPos, normal, diffDotX/xUnit.length(), diffDotY/yUnit.length());
+	return IntersectResult(this, distance, interPos, normal,1-( diffDotX/xUnit.length()), diffDotY/yUnit.length());
 }
 
 
@@ -415,10 +415,12 @@ float Ellipsoid::getIntersectDistance(const GzRay &ray) const
 			{
 				distance= dDotV - deltaSqrt;
 			}
-			else
+			else if (dDotV + deltaSqrt>EPSILON0)
 			{
 				distance= dDotV + deltaSqrt;
 			}
+			else {
+				return std::numeric_limits<float>::infinity(); }
 		}
 		GzVector3 interPos(new_ray.getPoint(distance));
 

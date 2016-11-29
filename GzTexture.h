@@ -10,14 +10,14 @@ class GzTexture
 public:
     GzColor (GzTexture::*tex_fun)(float, float);  // texture mapping function pointer
     const char* tex_file;             // file name for texture image
-    int tex_scale;
+    float tex_scale;
     int xs, ys;
     int open = 0;
     GzColor *image = nullptr;
 
     GzTexture();
-    GzTexture(GzColor(GzTexture::*func)(float, float), int scale);
-    GzTexture(const char* &_texfile, GzColor(GzTexture::*func)(float, float), int scale);
+    GzTexture(GzColor(GzTexture::*func)(float, float), float scale);
+    GzTexture(const char* &_texfile, GzColor(GzTexture::*func)(float, float), float scale);
 
     // load image texture file
     void loadFile(const char* &file);
